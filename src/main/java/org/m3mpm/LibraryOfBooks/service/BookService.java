@@ -34,7 +34,6 @@ public class BookService {
     }
 
     @Transactional
-
     public void updateBook(Long id, Book editedBook){
         bookRepository.updateBook(id,editedBook.getTitle(),editedBook.getAuthor(),editedBook.getPublishedDate());
     }

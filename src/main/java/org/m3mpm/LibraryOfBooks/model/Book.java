@@ -1,6 +1,7 @@
 package org.m3mpm.LibraryOfBooks.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -19,6 +20,7 @@ public class Book {
     @Column(name = "author")
     private String author;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "published_date")
     private LocalDate publishedDate;
 
