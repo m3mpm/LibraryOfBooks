@@ -1,5 +1,6 @@
 package org.m3mpm.LibraryOfBooks.service;
 
+import org.m3mpm.LibraryOfBooks.exception.BookException;
 import org.m3mpm.LibraryOfBooks.model.Book;
 import org.m3mpm.LibraryOfBooks.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +19,24 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public Optional<List<Book>> getAllBooks() {
-        //  List<Book> books = bookRepository.findAll();
+    public List<Book> getAllBooks() {
         List<Book> books = bookRepository.getAllBooks();
-        return books.isEmpty() ? Optional.empty() : Optional.of(books);
+        if (books.isEmpty())
+            throw new BookException("EmptyLibrary");
+        return books;
     }
 
-    public Optional<Book> getBook(Long id){
-        return bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
+    public Book getBook(Long id){
+        Optional<Book> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
+        if(optionalBook.isEmpty()){
+            throw new BookException("NoBook");
+        }
+        return optionalBook.get();
     }
 
     @Transactional
-    public void saveNewBook(Book newBook){
-        bookRepository.save(newBook);
+    public Book saveNewBook(Book newBook){
+        return bookRepository.save(newBook);
     }
 
     @Transactional
@@ -42,13 +48,5 @@ public class BookService {
     public void deleteBookById(Long id){
         bookRepository.deleteBookById(id);
     }
-
-    /* ver.2 delete through Book object
-    @Transactional
-    public void deleteBook(Book deletedBooks){
-        bookRepository.delete(deletedBooks);
-    }
-     */
-
 
 }
