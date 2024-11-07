@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add New Book</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/normalize.css}" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
+</head>
+<body>
+
+<div class="parent">
+    <div class="block">
+        <h3>New Book</h3>
+
+        <form th:action="@{/books/add}" th:method="post" th:object="${newBook}">
+
+            <div>
+                <label for="title">Title</label>
+                <input type="text" th:field="*{title}" id="title" placeholder="Title">
+                <br>
+                <label for="author">Author</label>
+                <input type="text" th:field="*{author}" id="author" placeholder="Author">
+                <br>
+                <label for="published-date">Published Date</label>
+                <input type="date" th:field="*{publishedDate}" id="published-date" placeholder="YYYY-MM-DD">
+                <br>
+                <input type="submit" value="Add Book">
+            </div>
+
+        </form>
+
+        <div>
+            <a href="/books">Back to list of Books</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
