@@ -15,8 +15,11 @@ public class ExceptionControllerAdvice {
         ErrorDetails errorDetails = new ErrorDetails(); // Создаем объект ErrorDetails и устанавливаем сообщение
 
         errorMessage = switch (errorMessage){
-            case "EmptyLibrary" -> "List of Books is empty!";
-            case "NoBook" -> "This book is missing from the library";
+            case "EMPTY_LIBRARY" -> "The list of books is empty!";
+            case "NOT_FOUND" -> "The book isn't found!";
+            case "EXISTS" -> "The book is already exists!";
+            case "NOT_DELETE" -> "The book didn't deleted! The book isn't found!";
+            case "NOT_UPDATE" -> "The book didn't updated! The book isn't found!";
             default -> "Unknown error!";
         };
         errorDetails.setMessage(errorMessage);

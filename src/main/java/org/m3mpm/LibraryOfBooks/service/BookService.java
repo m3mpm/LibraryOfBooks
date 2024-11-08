@@ -22,31 +22,46 @@ public class BookService {
     public List<Book> getAllBooks() {
         List<Book> books = bookRepository.getAllBooks();
         if (books.isEmpty())
-            throw new BookException("EmptyLibrary");
+            throw new BookException("EMPTY_LIBRARY");
         return books;
     }
 
     public Book getBook(Long id){
         Optional<Book> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
         if(optionalBook.isEmpty()){
-            throw new BookException("NoBook");
+            throw new BookException("NOT_FOUND");
         }
         return optionalBook.get();
     }
 
     @Transactional
     public Book saveNewBook(Book newBook){
+        Optional<Book> optionalBook = bookRepository.findAll().stream().filter(book -> book.getTitle().equals(newBook.getTitle())).findAny();
+        if(optionalBook.isPresent())
+            throw new BookException("EXISTS");
         return bookRepository.save(newBook);
     }
 
     @Transactional
-    public void updateBook(Long id, Book editedBook){
-        bookRepository.updateBook(id,editedBook.getTitle(),editedBook.getAuthor(),editedBook.getPublishedDate());
+    public void deleteBookById(Long id){
+        Optional<Book> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
+        if(optionalBook.isEmpty()){
+            throw new BookException("NOT_DELETE");
+        }
+        bookRepository.deleteById(id);
     }
 
     @Transactional
-    public void deleteBookById(Long id){
-        bookRepository.deleteBookById(id);
+    public Book updateBook(Long id, Book editedBook){
+        Optional<Book> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
+        if(optionalBook.isEmpty()){
+            throw new BookException("NOT_UPDATE");
+        }
+        Book updatedBook = optionalBook.get();
+        updatedBook.setTitle(editedBook.getTitle());
+        updatedBook.setAuthor(editedBook.getAuthor());
+        updatedBook.setPublishedDate(editedBook.getPublishedDate());
+        return bookRepository.save(updatedBook);
     }
 
 }
