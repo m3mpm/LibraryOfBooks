@@ -31,11 +31,6 @@ public class Book {
         return id;
     }
 
-    /* for ver. 2 delete through Books object
-    public void setId(Long id) {
-        this.id = id;
-    }*/
-
     public String getTitle() {
         return title;
     }

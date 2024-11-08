@@ -1,11 +1,12 @@
 package org.m3mpm.LibraryOfBooks.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.m3mpm.LibraryOfBooks.model.Book;
+import org.m3mpm.LibraryOfBooks.rabbitmq.MessageSender;
 import org.m3mpm.LibraryOfBooks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
+    private final MessageSender messageSender;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, MessageSender messageSender, ObjectMapper objectMapper) {
         this.bookService = bookService;
+        this.messageSender = messageSender;
     }
 
     @GetMapping()
@@ -35,22 +38,22 @@ public class BookController {
 
     @PostMapping("/add")
     public ResponseEntity<?> addBook(@RequestBody Book newBook){
-        Book book = bookService.saveNewBook(newBook);
+        messageSender.sendBookMessage("ADD", newBook);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(book);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteBookById(@PathVariable("id") Long id) {
-        bookService.deleteBookById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+                .body(newBook);
     }
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> editBook(@PathVariable("id") Long id, @RequestBody Book editedBook) {
-        Book updatedBook = bookService.updateBook(id, editedBook);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedBook);
+        messageSender.sendBookMessage("UPDATE", id, editedBook);
+        return ResponseEntity.status(HttpStatus.OK).body(editedBook);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteBookById(@PathVariable("id") Long id) {
+        messageSender.sendBookMessage("DELETE", id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
