@@ -22,7 +22,7 @@ public class BookListener {
     public void receiveMessage(String message){
         String[] parts = message.split(" , ");
         String action = parts[0];
-        String bookData = parts[2];
+        String bookData = parts[1];
         Long id = Long.valueOf(0);
         Book book;
 
@@ -30,15 +30,13 @@ public class BookListener {
             switch (action) {
                 case "ADD":
                     // Создайте и сохраните новую книгу
-                    bookData = parts[1];
                     book = objectMapper.readValue(bookData, Book.class);  // Десериализация JSON в объект Book
                     bookService.saveNewBook(book);
                     break;
                 case "UPDATE":
                     // Обновите книгу по ID
-                    bookData = parts[1];
-                    book = objectMapper.readValue(bookData, Book.class);
                     id = Long.parseLong(parts[2]);
+                    book = objectMapper.readValue(bookData, Book.class);
                     bookService.updateBook(id, book);
                     break;
                 case "DELETE":

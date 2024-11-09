@@ -6,9 +6,9 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: docker_books_db
+      POSTGRES_USER: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
-#      POSTGRES_USER: postgres
 #      POSTGRES_PASSWORD: postgres
     volumes:
       - books-data:/var/lib/postgresql/books_data
