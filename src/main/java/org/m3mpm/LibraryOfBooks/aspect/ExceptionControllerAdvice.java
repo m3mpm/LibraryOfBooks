@@ -18,8 +18,8 @@ public class ExceptionControllerAdvice {
             case "EMPTY_LIBRARY" -> "The list of books is empty!";
             case "NOT_FOUND" -> "The book isn't found!";
             case "EXISTS" -> "The book is already exists!";
-            case "NOT_DELETE" -> "The book didn't deleted! The book isn't found!";
             case "NOT_UPDATE" -> "The book didn't updated! The book isn't found!";
+            case "NOT_DELETE" -> "The book didn't deleted! The book isn't found!";
             default -> "Unknown error!";
         };
         errorDetails.setMessage(errorMessage);

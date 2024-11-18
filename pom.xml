@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -64,11 +65,29 @@
 			<scope>test</scope>
 		</dependency>
 
-<!--	add for RabbitMQ	-->
+		<!--	add for RabbitMQ	-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
+		<!--		for MapStruct-->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
+		<!--		for MapStruct-->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+
+
 
 	</dependencies>
 
@@ -77,6 +96,24 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+
+			<!--		for MapStruct-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source> <!-- Укажите вашу версию Java -->
+					<target>${java.version}</target> <!-- Укажите вашу версию Java -->
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
