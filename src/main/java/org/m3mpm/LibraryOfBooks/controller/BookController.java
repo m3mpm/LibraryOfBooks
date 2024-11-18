@@ -1,6 +1,7 @@
 package org.m3mpm.LibraryOfBooks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.m3mpm.LibraryOfBooks.dto.BookDto;
 import org.m3mpm.LibraryOfBooks.model.Book;
 import org.m3mpm.LibraryOfBooks.rabbitmq.MessageSender;
 import org.m3mpm.LibraryOfBooks.service.BookService;
@@ -26,32 +27,33 @@ public class BookController {
 
     @GetMapping()
     public ResponseEntity<?> showAllBooks(){
-        List<Book> allBooks = bookService.getAllBooks();
+        List<BookDto> allBooks = bookService.getAllBooks();
         return ResponseEntity.status(HttpStatus.OK).body(allBooks);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> showBook(@PathVariable("id") Long id){
-        Book book =  bookService.getBook(id);
-        return ResponseEntity.status(HttpStatus.OK).body(book);
+        BookDto bookDto =  bookService.getBook(id);
+        return ResponseEntity.status(HttpStatus.OK).body(bookDto);
     }
 
+    /*!!!Проработать что как возвращает созданную книгу*/
     @PostMapping("/add")
-    public ResponseEntity<?> addBook(@RequestBody Book newBook){
-        messageSender.sendBookMessage("ADD", newBook);
+    public ResponseEntity<?> addBook(@RequestBody BookDto newBookDto){
+        messageSender.sendBookMessage("ADD", newBookDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(newBook);
+                .body(newBookDto);
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> editBook(@PathVariable("id") Long id, @RequestBody Book editedBook) {
-        messageSender.sendBookMessage("UPDATE", id, editedBook);
-        return ResponseEntity.status(HttpStatus.OK).body(editedBook);
+    public ResponseEntity<?> editBook(@PathVariable("id") Long id, @RequestBody BookDto editedBookDto) {
+        messageSender.sendBookMessage("UPDATE", id, editedBookDto);
+        return ResponseEntity.status(HttpStatus.OK).body(editedBookDto);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteBookById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteBookById(@PathVariable("id") Long id) {
         messageSender.sendBookMessage("DELETE", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
