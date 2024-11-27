@@ -1,6 +1,7 @@
 package org.m3mpm.LibraryOfBooks.rabbitmq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.m3mpm.LibraryOfBooks.dto.BookDto;
 import org.m3mpm.LibraryOfBooks.model.Book;
 import org.m3mpm.LibraryOfBooks.service.BookService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -24,20 +25,20 @@ public class BookListener {
         String action = parts[0];
         String bookData = parts[1];
         Long id = Long.valueOf(0);
-        Book book;
+        BookDto bookDto;
 
         try{
             switch (action) {
                 case "ADD":
                     // Создайте и сохраните новую книгу
-                    book = objectMapper.readValue(bookData, Book.class);  // Десериализация JSON в объект Book
-                    bookService.saveNewBook(book);
+                    bookDto = objectMapper.readValue(bookData, BookDto.class);  // Десериализация JSON в объект Book
+                    bookService.saveNewBook(bookDto);
                     break;
                 case "UPDATE":
                     // Обновите книгу по ID
                     id = Long.parseLong(parts[2]);
-                    book = objectMapper.readValue(bookData, Book.class);
-                    bookService.updateBook(id, book);
+                    bookDto = objectMapper.readValue(bookData, BookDto.class);
+                    bookService.updateBook(id, bookDto);
                     break;
                 case "DELETE":
                     // Удалите книгу по ID

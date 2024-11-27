@@ -2,6 +2,7 @@ package org.m3mpm.LibraryOfBooks.rabbitmq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.m3mpm.LibraryOfBooks.dto.BookDto;
 import org.m3mpm.LibraryOfBooks.model.Book;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,21 @@ public class MessageSender {
         this.objectMapper = objectMapper;
     }
 
-    public void sendBookMessage(String action, Book book){
+    public void sendBookMessage(String action, BookDto bookDto){
         try{
-            String bookData = objectMapper.writeValueAsString(book);
+            String bookData = objectMapper.writeValueAsString(bookDto);
             String message = action + " , " + bookData;
+            rabbitTemplate.convertAndSend(RabbitConfig.QUEUE_NAME, message);
+        } catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void sendBookMessage(String action, Long id, BookDto bookDto){
+        try{
+            String bookData = objectMapper.writeValueAsString(bookDto);
+            String message = action + " , " + bookData +  " , " + id.toString();
             rabbitTemplate.convertAndSend(RabbitConfig.QUEUE_NAME, message);
         } catch (JsonProcessingException e){
             e.printStackTrace();
@@ -32,16 +44,6 @@ public class MessageSender {
         try{
             String bookData = objectMapper.writeValueAsString(id);
             String message = action + " , " + bookData;
-            rabbitTemplate.convertAndSend(RabbitConfig.QUEUE_NAME, message);
-        } catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void sendBookMessage(String action, Long id, Book book){
-        try{
-            String bookData = objectMapper.writeValueAsString(book);
-            String message = action + " , " + bookData +  " , " + id.toString();
             rabbitTemplate.convertAndSend(RabbitConfig.QUEUE_NAME, message);
         } catch (JsonProcessingException e){
             e.printStackTrace();
