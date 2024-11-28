@@ -29,8 +29,14 @@ RabbitMQ должен быть настроен для отправки сооб
 1. Запустите Docker
 2. Перейдите в папку `LibraryOfBooks/`, где находится файл `docker-compose.yml`
 3. Выполните следующие команды в терминале:
-   1. docker-compose up -d
-   2. mvn spring-boot:run
+
+   ```bash
+   docker-compose up -d
+   ```
+
+   ```bash
+   mvn spring-boot:run
+   ```
 
 ### Для проверки приложения используйте программу `Postman`
 
@@ -55,4 +61,15 @@ RabbitMQ должен быть настроен для отправки сооб
    }
    ```
 5. Удаление книги по идентификатору: `DEL http://localhost:8080/books/delete/id`, где id - номер книги
-   
+
+### Остановка приложения
+
+1. Выполните следующие команды в терминале:
+
+   ```bash
+   mvn spring-boot:stop
+   ```
+
+   ```bash
+   docker-compose down 
+   ```
