@@ -40,21 +40,24 @@ public class BookController {
     /*!!!Проработать что как возвращает созданную книгу*/
     @PostMapping("/add")
     public ResponseEntity<?> addBook(@RequestBody BookDto newBookDto){
-        messageSender.sendBookMessage("ADD", newBookDto);
+        BookDto bookDto = bookService.saveNewBook(newBookDto);
+//        messageSender.sendBookMessage("ADD", newBookDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(newBookDto);
+                .body(bookDto);
     }
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> editBook(@PathVariable("id") Long id, @RequestBody BookDto editedBookDto) {
-        messageSender.sendBookMessage("UPDATE", id, editedBookDto);
-        return ResponseEntity.status(HttpStatus.OK).body(editedBookDto);
+        BookDto bookDto = bookService.updateBook(id, editedBookDto);
+//        messageSender.sendBookMessage("UPDATE", id, editedBookDto);
+        return ResponseEntity.status(HttpStatus.OK).body(bookDto);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteBookById(@PathVariable("id") Long id) {
-        messageSender.sendBookMessage("DELETE", id);
+        bookService.deleteBookById(id);
+//        messageSender.sendBookMessage("DELETE", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
