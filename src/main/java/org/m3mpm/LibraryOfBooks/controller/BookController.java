@@ -2,7 +2,6 @@ package org.m3mpm.LibraryOfBooks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.m3mpm.LibraryOfBooks.dto.BookDto;
-import org.m3mpm.LibraryOfBooks.model.Book;
 import org.m3mpm.LibraryOfBooks.rabbitmq.MessageSender;
 import org.m3mpm.LibraryOfBooks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
