@@ -3,7 +3,7 @@ package org.m3mpm.LibraryOfBooks.service;
 import org.m3mpm.LibraryOfBooks.dto.BookDto;
 import org.m3mpm.LibraryOfBooks.exception.BookException;
 import org.m3mpm.LibraryOfBooks.mapper.BookMapper;
-import org.m3mpm.LibraryOfBooks.model.Book;
+import org.m3mpm.LibraryOfBooks.entity.BookEntity;
 import org.m3mpm.LibraryOfBooks.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,20 +25,20 @@ public class BookServiceImp implements BookService {
     }
 
     public List<BookDto> getAllBooks() {
-        List<Book> books = bookRepository.getAllBooks();
+        List<BookEntity> books = bookRepository.getAllBooks();
         if (books.isEmpty())
             throw new BookException("EMPTY_LIBRARY");
         return books.stream().map(bookMapper::bookToBookDto).collect(Collectors.toList());
     }
 
     public BookDto getBook(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new BookException("NOT_FOUND"));
+        BookEntity book = bookRepository.findById(id).orElseThrow(() -> new BookException("NOT_FOUND"));
         return bookMapper.bookToBookDto(book);
     }
 
     @Transactional
     public BookDto saveNewBook(BookDto newBookDto) {
-        Optional<Book> optionalBook = bookRepository.findAll().stream().
+        Optional<BookEntity> optionalBook = bookRepository.findAll().stream().
                 filter(book -> book.getTitle().equals(newBookDto.getTitle())).
                 findAny();
         if (optionalBook.isPresent())
@@ -48,12 +48,12 @@ public class BookServiceImp implements BookService {
 
     @Transactional
     public BookDto updateBook(Long id, BookDto editedBookDto) {
-        Optional<Book> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
+        Optional<BookEntity> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
         if (optionalBook.isEmpty()) {
             throw new BookException("NOT_UPDATE");
         }
 
-        Book updatedBook = bookMapper.bookDtoToBook(editedBookDto);
+        BookEntity updatedBook = bookMapper.bookDtoToBook(editedBookDto);
         updatedBook.setId(optionalBook.get().getId());
         updatedBook.setCreated_at(optionalBook.get().getCreated_at());
         return bookMapper.bookToBookDto(bookRepository.save(updatedBook));
@@ -61,7 +61,7 @@ public class BookServiceImp implements BookService {
 
     @Transactional
     public void deleteBookById(Long id) {
-        Optional<Book> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
+        Optional<BookEntity> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
         if (optionalBook.isEmpty()) {
             throw new BookException("NOT_DELETE");
         }

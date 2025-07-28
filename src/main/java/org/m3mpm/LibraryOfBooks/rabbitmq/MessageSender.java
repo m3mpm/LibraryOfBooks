@@ -3,7 +3,6 @@ package org.m3mpm.LibraryOfBooks.rabbitmq;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.m3mpm.LibraryOfBooks.dto.BookDto;
-import org.m3mpm.LibraryOfBooks.model.Book;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,6 @@
-package org.m3mpm.LibraryOfBooks.model;
+package org.m3mpm.LibraryOfBooks.entity;
 
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "books")
-public class Book {
+public class BookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -50,7 +49,7 @@ public class Book {
         this.updated_at = updated_at;
     }
 
-    public Book() {
+    public BookEntity() {
     }
 
     public Long getId() {
@@ -85,7 +84,7 @@ public class Book {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
+        BookEntity book = (BookEntity) o;
         return Objects.equals(title, book.title) && Objects.equals(author, book.author) && Objects.equals(publishedDate, book.publishedDate) && Objects.equals(created_at, book.created_at) && Objects.equals(updated_at, book.updated_at);
     }
 
