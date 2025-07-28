@@ -8,7 +8,7 @@
 
     <changeSet id="v-1.0-create-table-books" author="m3mpm">
         <createTable tableName="books">
-            <column name="id" type="bigserial">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -35,5 +35,17 @@
         </createTable>
     </changeSet>
 
+    <!-- Добавляем последовательность -->
+    <changeSet id="v-1.1-create-sequence-book_sequence" author="m3mpm">
+        <createSequence sequenceName="book_sequence" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <!-- Связываем столбец id с последовательностью -->
+    <changeSet id="v-1.2-set-sequence-to-id" author="m3mpm">
+        <addDefaultValue
+                tableName="books"
+                columnName="id"
+                defaultValueSequenceNext="book_sequence"/>
+    </changeSet>
 
 </databaseChangeLog>
