@@ -1,6 +1,7 @@
 package org.m3mpm.LibraryOfBooks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import org.m3mpm.LibraryOfBooks.dto.BookDto;
 import org.m3mpm.LibraryOfBooks.rabbitmq.MessageSender;
 import org.m3mpm.LibraryOfBooks.service.BookService;
@@ -36,9 +37,8 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(bookDto);
     }
 
-    /*!!!Проработать что как возвращает созданную книгу*/
     @PostMapping("/add")
-    public ResponseEntity<?> addBook(@RequestBody BookDto newBookDto){
+    public ResponseEntity<?> addBook(@Valid @RequestBody BookDto newBookDto){
         BookDto bookDto = bookService.saveNewBook(newBookDto);
 //        messageSender.sendBookMessage("ADD", newBookDto);
         return ResponseEntity
@@ -47,7 +47,7 @@ public class BookController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> editBook(@PathVariable("id") Long id, @RequestBody BookDto editedBookDto) {
+    public ResponseEntity<?> editBook(@PathVariable("id") Long id, @Valid @RequestBody BookDto editedBookDto) {
         BookDto bookDto = bookService.updateBook(id, editedBookDto);
 //        messageSender.sendBookMessage("UPDATE", id, editedBookDto);
         return ResponseEntity.status(HttpStatus.OK).body(bookDto);
