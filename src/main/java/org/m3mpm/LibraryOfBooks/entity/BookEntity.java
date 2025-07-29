@@ -6,14 +6,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-    @Entity
-    @Table(name = "books")
-    public class BookEntity {
-        @Id
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
-        @SequenceGenerator(name = "book_seq", sequenceName = "book_sequence", allocationSize = 1)
-        @Column(name = "id")
-        private Long id;
+@Entity
+@Table(name = "books")
+public class BookEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
+    @SequenceGenerator(name = "book_seq", sequenceName = "book_sequence", allocationSize = 1)
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "title")
     private String title;
