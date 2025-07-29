@@ -2,6 +2,7 @@ package org.m3mpm.LibraryOfBooks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.m3mpm.LibraryOfBooks.dto.BookDto;
 import org.m3mpm.LibraryOfBooks.rabbitmq.MessageSender;
 import org.m3mpm.LibraryOfBooks.service.BookService;
@@ -13,17 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/books")
 public class BookController {
-    private final BookService bookService;
-    private final MessageSender messageSender;
 
-    @Autowired
-    public BookController(BookService bookService, MessageSender messageSender, ObjectMapper objectMapper) {
-        this.bookService = bookService;
-        this.messageSender = messageSender;
-    }
+    private final BookService bookService;
+
+    private final MessageSender messageSender;
 
     @GetMapping()
     public ResponseEntity<?> showAllBooks(){
