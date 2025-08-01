@@ -1,6 +1,5 @@
 package org.m3mpm.LibraryOfBooks.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.m3mpm.LibraryOfBooks.dto.BookDto;
@@ -24,19 +23,19 @@ public class BookController {
     private final MessageSender messageSender;
 
     @GetMapping()
-    public ResponseEntity<?> showAllBooks(){
+    public ResponseEntity<List<BookDto>> showAllBooks(){
         List<BookDto> allBooks = bookService.getAllBooks();
         return ResponseEntity.status(HttpStatus.OK).body(allBooks);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> showBook(@PathVariable("id") Long id){
+    public ResponseEntity<BookDto> showBook(@PathVariable("id") Long id){
         BookDto bookDto =  bookService.getBook(id);
         return ResponseEntity.status(HttpStatus.OK).body(bookDto);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addBook(@Valid @RequestBody BookDto newBookDto){
+    public ResponseEntity<BookDto> addBook(@Valid @RequestBody BookDto newBookDto){
         BookDto bookDto = bookService.saveNewBook(newBookDto);
 //        messageSender.sendBookMessage("ADD", newBookDto);
         return ResponseEntity
@@ -45,14 +44,14 @@ public class BookController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> editBook(@PathVariable("id") Long id, @Valid @RequestBody BookDto editedBookDto) {
+    public ResponseEntity<BookDto> editBook(@PathVariable("id") Long id, @Valid @RequestBody BookDto editedBookDto) {
         BookDto bookDto = bookService.updateBook(id, editedBookDto);
 //        messageSender.sendBookMessage("UPDATE", id, editedBookDto);
         return ResponseEntity.status(HttpStatus.OK).body(bookDto);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteBookById(@PathVariable("id") Long id) {
+    public ResponseEntity<BookDto> deleteBookById(@PathVariable("id") Long id) {
         bookService.deleteBookById(id);
 //        messageSender.sendBookMessage("DELETE", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
