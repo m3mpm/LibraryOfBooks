@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<BookEntity,Long> {
 
@@ -22,4 +23,6 @@ public interface BookRepository extends JpaRepository<BookEntity,Long> {
     @Modifying
     @Query("DELETE FROM BookEntity b WHERE b.id = :id")
     void deleteBookById(@Param("id") Long id);
+
+    Optional<BookEntity> findByTitleAndAuthorAndPublishedDate(String title, String author, LocalDate publishedDate);
 }

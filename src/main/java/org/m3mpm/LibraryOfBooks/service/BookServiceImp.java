@@ -37,10 +37,8 @@ public class BookServiceImp implements BookService {
     }
 
     @Transactional
-    public BookDto saveNewBook(BookDto newBookDto) {
-        Optional<BookEntity> optionalBook = bookRepository.findAll().stream().
-                filter(book -> book.getTitle().equals(newBookDto.getTitle())).
-                findAny();
+    public BookDto saveBook(BookDto newBookDto) {
+        Optional<BookEntity>  optionalBook = bookRepository.findByTitleAndAuthorAndPublishedDate(newBookDto.getTitle(), newBookDto.getAuthor(), newBookDto.getPublishedDate());
         if (optionalBook.isPresent())
             throw new BookException("EXISTS");
         return bookMapper.bookToBookDto(bookRepository.save(bookMapper.bookDtoToBook(newBookDto)));
@@ -48,23 +46,16 @@ public class BookServiceImp implements BookService {
 
     @Transactional
     public BookDto updateBook(Long id, BookDto editedBookDto) {
-        Optional<BookEntity> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
-        if (optionalBook.isEmpty()) {
-            throw new BookException("NOT_UPDATE");
-        }
-
+        BookEntity book = bookRepository.findById(id).orElseThrow(() -> new BookException("NOT_UPDATE"));
         BookEntity updatedBook = bookMapper.bookDtoToBook(editedBookDto);
-        updatedBook.setId(optionalBook.get().getId());
-        updatedBook.setCreated_at(optionalBook.get().getCreated_at());
+        updatedBook.setId(book.getId());
+        updatedBook.setCreated_at(book.getCreated_at());
         return bookMapper.bookToBookDto(bookRepository.save(updatedBook));
     }
 
     @Transactional
-    public void deleteBookById(Long id) {
-        Optional<BookEntity> optionalBook = bookRepository.findAll().stream().filter(book -> book.getId().equals(id)).findAny();
-        if (optionalBook.isEmpty()) {
-            throw new BookException("NOT_DELETE");
-        }
+    public void deleteBook(Long id) {
+        if(!bookRepository.existsById(id)) throw new BookException("NOT_DELETE");
         bookRepository.deleteById(id);
     }
 }
