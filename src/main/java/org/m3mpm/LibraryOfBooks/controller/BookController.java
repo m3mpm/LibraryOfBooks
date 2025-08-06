@@ -32,7 +32,7 @@ public class BookController {
 
     @PostMapping("/add")
     public ResponseEntity<BookDto> addBook(@Valid @RequestBody BookDto newBookDto){
-        BookDto bookDto = bookService.saveNewBook(newBookDto);
+        BookDto bookDto = bookService.saveBook(newBookDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(bookDto);
@@ -45,8 +45,8 @@ public class BookController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<BookDto> deleteBookById(@PathVariable("id") Long id) {
-        bookService.deleteBookById(id);
+    public ResponseEntity<BookDto> deleteBook(@PathVariable("id") Long id) {
+        bookService.deleteBook(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
