@@ -35,3 +35,7 @@ build/
 ### Other
 .DS_Store
 
+### env
+.env.docker
+.env.local
+
