@@ -12,9 +12,9 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_DB: docker_books_db
-      POSTGRES_USER: m3mpm
-      POSTGRES_PASSWORD: "m3mpm"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - books-data:/var/lib/postgresql/docker_books_db
 
@@ -27,11 +27,8 @@ services:
     depends_on:
       - nginx
       - db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/docker_books_db
-      SPRING_DATASOURCE_USERNAME: m3mpm
-      SPRING_DATASOURCE_PASSWORD: "m3mpm"
-      SPRING_PROFILES_ACTIVE: docker
+    env_file:
+      - .env.docker
 
 volumes:
   books-data:
