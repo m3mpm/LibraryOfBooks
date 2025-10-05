@@ -11,10 +11,8 @@ services:
     image: postgres:15
     ports:
       - "5433:5432"
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file:
+      - .env.docker
     volumes:
       - books-data:/var/lib/postgresql/docker_books_db
 
@@ -24,11 +22,11 @@ services:
       dockerfile: Dockerfile_app
     ports:
       - "8081:8081"
+    env_file:
+      - .env.docker
     depends_on:
       - nginx
       - db
-    env_file:
-      - .env.docker
 
 volumes:
   books-data:
